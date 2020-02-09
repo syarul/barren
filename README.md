@@ -11,9 +11,9 @@ A lightweight state management for React
 On the main/entry React component
 
 ```jsx
-import StoreProvider from 'barren/provider'
+import StoreProvider from 'barren/lib/provider'
 
-import createStore from 'barren/createStore'
+import createStore from 'barren/lib/createStore'
 
 // should be imported elsewhere
 const ACTION_STORE = {
