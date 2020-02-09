@@ -11,7 +11,7 @@ import * as serviceWorker from './serviceWorker';
  * To use the store wrap the component `store(ComponentToWrap)`
  *
  */
-import StoreProvider from 'barren/provider'
+import StoreProvider from 'barren/lib/provider'
 
 /**
  * The Store instance
@@ -19,24 +19,42 @@ import StoreProvider from 'barren/provider'
  * since store can received update asynchronously we want to ensure
  * all childrens will apply these updates
  */
-import createStore from 'barren/createStore'
+import createStore from 'barren/lib/createStore'
+
+import { request, setConfig } from 'barren/api/axios-api'
+
+setConfig({ baseURL: 'https://api.github.com/search'})
 
 const ACTION_STORE = {
-	counter: function(action) {
-		if(action === 'add') {
+	counter: function(param) {
+		if(param === 'add') {
 			this.STORE['counter'] += 1
 		}
-		if(action === 'reduce') {
+		if(param === 'reduce') {
 			this.STORE['counter'] -= 1
 		}
+	},
+	users: function(params = {}){
+		const {
+			users = 'tom',
+			repos = 1,
+			followers = 1
+		} = params
+		const query = `users?q=${users}+repos:>${repos}+followers:>${followers}`
+		return request(query)
 	}
 }
 
 const STORE = {
-	counter: 0
+	counter: 0,
+	users: {}
 }
 
 const barren = createStore(ACTION_STORE, STORE)
+
+const { store } = barren
+
+store.DEBUG_MODE = true
 
 ReactDOM.render(
 	<StoreProvider {...barren} >

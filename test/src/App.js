@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import logo from './logo.svg';
 import './App.css';
 
@@ -9,12 +9,26 @@ function App(props) {
 
   const count = store.getData('counter')
 
+  const deferUsers = store.getData('users')
+
+  const [input, setInput] = useState('')
+
+  const [users] = useState(deferUsers)
+
   function add(){
     store.dispatch('counter', 'add')
   }
 
   function reduce(){
     store.dispatch('counter', 'reduce')
+  }
+
+  const onChange = e => {
+    setInput(e.target.value)
+  }
+
+  function searchUsers(){
+    store.dispatch('users', { users: input })
   }
 
   return (
@@ -27,6 +41,8 @@ function App(props) {
         <div style={{display: 'flex'}}>
           <button onClick={reduce}> - </button> {count} <button onClick={add}> + </button>
         </div>
+        <input onChange={onChange}/><button onClick={searchUsers}>search github users</button>
+        <pre style={{textAlign: 'left', fontSize: 13}}>{JSON.stringify(users, false, 2)}</pre>
         <a
           className="App-link"
           href="https://reactjs.org"

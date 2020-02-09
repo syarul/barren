@@ -17,11 +17,11 @@ import createStore from 'barren/lib/createStore'
 
 // should be imported elsewhere
 const ACTION_STORE = {
-    counter: function(action) {
-        if(action === 'add') {
+    counter: function(param) {
+        if(param === 'add') {
             this.STORE['counter'] += 1
         }
-        if(action === 'reduce') {
+        if(param === 'reduce') {
             this.STORE['counter'] -= 1
         }
     }
@@ -68,6 +68,32 @@ function App(props) {
 
 export default store(App)
 ```
+
+## async
+
+Usage sample using axios
+```js
+import { request, setConfig } from 'barren/api/axios-api'
+
+setConfig({ baseURL: 'https://api.github.com/search'})
+
+const ACTION_STORE = {
+  users: function(params = {}){
+    const {
+      users = 'tom',
+      repos = 1,
+      followers = 1
+    } = params
+    const query = `users?q=${users}+repos:>${repos}+followers:>${followers}`
+    return request(query)
+  }
+}
+
+const STORE = {
+  users: {}
+}
+```
+
 
 ## api
 ```js
