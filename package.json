@@ -1,0 +1,27 @@
+{
+  "name": "barren",
+  "version": "0.0.2",
+  "description": "A lightweight state management for React",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/syarul/barren.git"
+  },
+  "keywords": [
+    "state management",
+    "react",
+    "flow"
+  ],
+  "author": "Shahrul Nizam Selamat <hottincup@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/syarul/barren/issues"
+  },
+  "homepage": "https://github.com/syarul/barren#readme",
+  "dependencies": {
+    "clone": "^2.1.2"
+  }
+}
