@@ -2143,7 +2143,7 @@ balanced-match@^1.0.0:
   integrity sha1-ibTRmasr7kneFk6gK4nORi1xt2c=
 
 "barren@file:..":
-  version "0.0.5"
+  version "0.0.6"
   dependencies:
     axios "^0.19.2"
     clone "^2.1.2"
