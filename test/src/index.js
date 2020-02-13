@@ -47,7 +47,16 @@ const ACTION_STORE = {
 
 const STORE = {
 	counter: 0,
-	users: {}
+	users: function(result){
+		const { 
+			total_count = 0, 
+			items = []
+		} = result || {}
+		return {
+			usersCount: total_count,
+			userList: items
+		}
+	}
 }
 
 const barren = createStore(ACTION_STORE, STORE)
