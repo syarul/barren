@@ -1,8 +1,6 @@
 # barren
 A lightweight state management for React
 
-**Work In Progress**
-
 ## install
 ```npm i barren```
 
@@ -49,7 +47,7 @@ import store from 'barren'
 function App(props) {
   const { store } = props 
 
-  const count = store.getData('counter')
+  const count = store.fetch('counter')
 
   function add(){
     store.dispatch('counter', 'add')
@@ -90,7 +88,17 @@ const ACTION_STORE = {
 }
 
 const STORE = {
-  users: {}
+  // to process output from ACTION_STORE use function
+  users: function(result = {}){
+    const { 
+      total_count = 0, 
+      items = []
+    } = result
+    return {
+      usersCount: total_count,
+      userList: items
+    }
+  }
 }
 ```
 
@@ -101,8 +109,8 @@ import store from 'barren'
 function App(props) {
   const { store } = props 
 
-  const deferUsers = store.getData('users')
-  const [users] = useState(deferUsers)
+  const userCount = store.fetch('users', 'usersCount')
+  const userList = store.fetch('users', 'userList')
 
   const [input, setInput] = useState('')
 
@@ -116,8 +124,12 @@ function App(props) {
 
   return (
     <div>
-      <input onChange={onChange}/><button onClick={searchUsers}>search github users</button>
-      <pre>{JSON.stringify(users, false, 2)}</pre>
+      <input onChange={onChange}/>
+      <button onClick={searchUsers}>search github users</button>
+      <p>users count: {userCount}</p>
+      <pre>
+        {userList && userList.length && JSON.stringify(userList, false, 2)}
+      </pre>
     </div>
   )
 }
@@ -130,16 +142,54 @@ export default store(App)
 ```js
 store.dispatch(action, params, options, caller)
 ```
+dispatch an action from ACTION_STORE
 
 * **action:** *(object)* A valid string identifier, should be unique.
-* **params:** *(any types)* parameter to pass to the dispatcher events reference.
-* **options:** *(object, optional)* options parameter for the dispatcher.
-* **caller:** *(function, optional)* callback function to run after the dispatcher event finish.
+* **params:** *(any types)* Parameter to pass to the dispatcher event reference.
+* **options:** *(object, optional)* Options parameter for the dispatcher.
+* **caller:** *(function, optional)* Callback function to run after the dispatcher event finish.
 
 ### options parameter
-* **forceRewrite** *(boolean)* force rewriting the store cache on request.
-* **shallowUpdate** *(boolean)* once request is made do not cache to the store.
-* **timeout** *(integer)* custom timeout for for dispatcher request.
-* **event** *(boolean)* dispatch as event to listeners.
-* **inflightRequestCancellation** *(boolean)* assign request cancellation handler to the dispatcher.
+* **forceRewrite** *(boolean)* Force rewriting the store cache on request.
+* **shallowUpdate** *(boolean)* Once request is made do not cache to the store.
+* **timeout** *(integer)* Custom timeout for for dispatcher request.
+* **event** *(boolean)* Dispatch as event to listeners.
+* **inflightRequestCancellation** *(boolean)* Assign request cancellation handler to the dispatcher.
+
+```js
+store.fetch(action, param)
+```
+fetch result from STORE
+
+* **action:** *(string)* A valid string identifier, should be unique.
+* **param:** *(string, optional)* Property name of the result if is a valid object.
+
+```js
+store.clearCache(action)
+```
+flag an action to process next request
+
+* **action:** *(string)* A valid string identifier, should be unique.
+
+```js
+store.clearAllCache()
+```
+flag all actions to process all incoming request
+
+```js
+store.overrideStore (action, value)
+```
+override the store cache value
+
+* **action:** *(string)* A valid string identifier, should be unique.
+* **value:** *(any types)* New value for the reassignment.
+
+```js
+forceEvent (event, params)
+```
+forcefully emit an event
+
+* **event:** *(string)* A valid string identifier, should be unique.
+* **params:** *(any types)* Value to pass to the event.
+
 

@@ -7,10 +7,10 @@ import store from 'barren'
 function App(props) {
   const { store } = props 
 
-  const count = store.getData('counter')
+  const count = store.fetch('counter')
 
-  const userCount = store.getData('users', 'usersCount')
-  const userList = store.getData('users', 'userList')
+  const userCount = store.fetch('users', 'usersCount')
+  const userList = store.fetch('users', 'userList')
 
   useEffect(() => {
     console.log(userCount)

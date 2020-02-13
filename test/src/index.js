@@ -47,11 +47,11 @@ const ACTION_STORE = {
 
 const STORE = {
 	counter: 0,
-	users: function(result){
+	users: function(result ={}){
 		const { 
 			total_count = 0, 
 			items = []
-		} = result || {}
+		} = result
 		return {
 			usersCount: total_count,
 			userList: items
