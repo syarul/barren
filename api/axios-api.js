@@ -1,7 +1,5 @@
 const axios = require('axios')
 
-const devel = process.env.NODE_ENV === 'development'
-
 const baseURL = 'https://api.github.com/'
 
 const conf = {
@@ -13,11 +11,11 @@ const conf = {
   }
 }
 
-exports.setConfig = function(config){
+exports.setConfig = function (config) {
   Object.assign(conf, config)
 }
 
-exports.request = function(endpoint, type, data, timeout, inflightRequestCancelation) {
+exports.request = function (endpoint, type, data, timeout, inflightRequestCancelation) {
   if (timeout) {
     conf['timeout'] = timeout
   }
@@ -31,17 +29,18 @@ exports.request = function(endpoint, type, data, timeout, inflightRequestCancela
     inflightRequestCancelation(source)
   }
 
-  let reqData = {}
+  let reqData = {
+    cancelToken: source.token
+  }
   if (data) {
     reqData = {
       ...reqData,
-      ...data,
-      cancelToken: source.token
+      ...data
     }
   }
   reqData = JSON.stringify(reqData)
 
-  if(!type || type === 'get'){
+  if (!type || type === 'get') {
     return api
       .get(endpoint, reqData)
       .then(res => res.data)
@@ -52,7 +51,7 @@ exports.request = function(endpoint, type, data, timeout, inflightRequestCancela
           message: err.message
         }
       })
-  } else if(type === 'post'){
+  } else if (type === 'post') {
     return api
       .post(endpoint, reqData)
       .then(res => res.data)

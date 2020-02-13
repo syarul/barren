@@ -94,6 +94,37 @@ const STORE = {
 }
 ```
 
+On children component
+```jsx
+import store from 'barren'
+
+function App(props) {
+  const { store } = props 
+
+  const deferUsers = store.getData('users')
+  const [users] = useState(deferUsers)
+
+  const [input, setInput] = useState('')
+
+  const onChange = e => {
+    setInput(e.target.value)
+  }
+
+  function searchUsers(){
+    store.dispatch('users', { users: input })
+  }
+
+  return (
+    <div>
+      <input onChange={onChange}/><button onClick={searchUsers}>search github users</button>
+      <pre>{JSON.stringify(users, false, 2)}</pre>
+    </div>
+  )
+}
+
+export default store(App)
+```
+
 
 ## api
 ```js

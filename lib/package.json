@@ -1,8 +1,0 @@
-{
-  "name": "barren",
-  "version": "0.0.1",
-  "private": true,
-  "description": "A lightweight state management for React",
-  "author": "Shahrul Nizam Selamat <hottincup@gmail.com>",
-  "license": "MIT"
-}
